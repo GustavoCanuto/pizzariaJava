@@ -103,7 +103,7 @@ public class Main {
 								int escolhaSabor = 0;
 								int escolhaSabor2 = 0;
 								// Listar sabores disponíveis
-								System.out.println("\n1 - Pizza Completa \n2- Pizza Meio a Meio ");
+								System.out.println("\n1- Pizza Completa \n2- Pizza Meio a Meio ");
 
 								int tipoPizza = scanner.nextInt();
 
