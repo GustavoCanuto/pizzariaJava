@@ -19,7 +19,7 @@ public class Acompanhamento {
 
 	@Override
 	public String toString() {
-		return "nome=" + nome + "- valor=" + valor ;
+		return "nome: " + nome + " - valor: " + valor ;
 	}
 
 	

@@ -24,12 +24,11 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		  return "Cliente{" +
-	                "nome='" + nome + '\'' +
-	                ", cpf='" + cpf + '\'' +
-	                ", logradouro='" + logradouro + '\'' +
-	                ", numero='" + numero + '\'' +
-	                '}';
+		  return "Cliente:\n" +
+	                "nome: " + nome + '\n' +
+	                "cpf: " + cpf + '\n' +
+	                "logradouro: " + logradouro + '\n' +
+	                "numero: " + numero + '\n';
 	}
 	
 	
