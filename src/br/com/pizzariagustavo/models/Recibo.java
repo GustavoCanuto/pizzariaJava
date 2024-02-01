@@ -49,8 +49,8 @@ public class Recibo {
 
 	@Override
 	public String toString() {
-		return "\nRecibo\nidCompra: " + idCompra + "\ncliente: " + cliente + "listaPizzasEscolhidas:"
-				+ listaPizzasEscolhidas + "\nlistaAcompanhamentoEscolhidas: " + listaAcompanhamentoEscolhidas + "\n ";
+		return "\nRecibo\nidCompra: " + idCompra + "\ncliente: " + cliente + "lista Pizzas Compradas:"
+				+ listaPizzasEscolhidas + "\nlista Acompanhamentos Escolhidos: " + listaAcompanhamentoEscolhidas + "\n ";
 	}
 
 
