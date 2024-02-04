@@ -30,7 +30,7 @@ public class Pizza extends Produto{
 	
 	@Override
 	public String toString() {
-		return "nome: " + nome + ", valor: " + valor + ", sabor: " + sabor + "";
+		return "" + nome + " - valor: " + valor  + "";
 	}
 	
 }
