@@ -1,13 +1,17 @@
 package br.com.pizzariagustavo.models;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import br.com.pizzariagustavo.models.produto.Acompanhamento;
+import br.com.pizzariagustavo.models.produto.Pizza;
 
 public class Recibo {
 
     private static int contadorId = 1;
     private int idCompra;
     private Cliente cliente;
-    private ArrayList<Pizza> listaPizzasEscolhidas = new ArrayList<>();; 
+    private ArrayList<Pizza> listaPizzasEscolhidas = new ArrayList<>();
     private ArrayList<Acompanhamento> listaAcompanhamentoEscolhidas= new ArrayList<>();
 
     public Recibo() {
@@ -37,20 +41,38 @@ public class Recibo {
 	        this.listaAcompanhamentoEscolhidas.remove(acompanhamento);
 	  }
 
-	public ArrayList<Pizza> getListaPizzasEscolhidas() {
+	public List<Pizza> getListaPizzasEscolhidas() {
 		return listaPizzasEscolhidas;
 	}
 
 
-	public ArrayList<Acompanhamento> getListaAcompanhamentoEscolhidas() {
+	public List<Acompanhamento> getListaAcompanhamentoEscolhidas() {
 		return listaAcompanhamentoEscolhidas;
 	}
 
 
 	@Override
 	public String toString() {
-		return "\nRecibo\nidCompra: " + idCompra + "\n " + cliente + "lista Pizzas Compradas:"
-				+ listaPizzasEscolhidas + "\nlista Acompanhamentos Escolhidos: " + listaAcompanhamentoEscolhidas + "\n ";
+	    StringBuilder result = new StringBuilder("\nRecibo\nidCompra: " + idCompra + "\n " 
+	+ cliente + "\n*******Informações da Compra*******\n");
+
+	    // Adiciona informações das Pizzas
+	    result.append("\nlista Pizzas Compradas\n");
+	    for (Pizza pizza : listaPizzasEscolhidas) {
+	        result.append(pizza.toString());
+	        result.append("\n");
+	    }
+
+	    // Adiciona informações dos Acompanhamentos
+	    result.append("\nlista Acompanhamentos Escolhidos\n");
+	    for (Acompanhamento acompanhamento : listaAcompanhamentoEscolhidas) {
+	        result.append(acompanhamento.toString());
+	        result.append("\n");
+	    }
+
+	    result.append("\n");
+
+	    return result.toString();
 	}
 
 
