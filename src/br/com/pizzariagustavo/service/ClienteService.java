@@ -26,5 +26,30 @@ public class ClienteService {
 
 		System.out.println("Cliente cadastrado com sucesso:\n" + novoCliente);
 	}
+	
+	public Cliente validarCPF() {
+		
+		System.out.println("Digite o CPF do cliente:");
+		String cpfClienteCompra = scanner.next();
+
+		Cliente clienteEncontrado = encontrarClientePorCPF(cpfClienteCompra);
+
+		if (clienteEncontrado != null) {
+			return clienteEncontrado;
+		} else {
+			System.out.println("Cliente não encontrado. Voltando ao Menu Principal.\n");
+		}
+		
+		return null;
+	}
+
+	private Cliente encontrarClientePorCPF(String cpf) {
+		for (Cliente cliente : MockCliente.getListaClientes()) {
+			if (cliente.getCpf().equals(cpf)) {
+				return cliente;
+			}
+		}
+		return null;
+	}
 
 }
