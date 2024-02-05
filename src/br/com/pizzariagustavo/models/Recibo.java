@@ -46,7 +46,7 @@ public class Recibo {
 		return listaAcompanhamentoEscolhidas;
 	}
 
-	@Override
+
 	public String toString() {
 		StringBuilder result = new StringBuilder(
 				"\nCodigo da compra: " + idCompra + "\n " + cliente + "\n******* Informações da Compra *******\n");

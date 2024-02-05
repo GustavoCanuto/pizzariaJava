@@ -1,4 +1,4 @@
-package br.com.pizzariagustavo.infra;
+package br.com.pizzariagustavo.exceptions;
 
 public class OperacaoCanceladaException extends RuntimeException {
     

@@ -31,6 +31,14 @@ public class MockProdutos {
 
 	}
 
+	public static <T> String imprimirLista(List<T> lista) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < lista.size(); i++) {
+			sb.append((i + 1)).append(". ").append(lista.get(i)).append("\n");
+		}
+		return sb.toString();
+	}
+	
 	public static List<Pizza> getListaPizzas() {
 		return listaPizzas;
 	}

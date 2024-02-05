@@ -22,7 +22,6 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 
-	@Override
 	public String toString() {
 		return "\n******* Informações do Cliente *******\n\n" + "nome: " + nome + '\n' + "cpf: " + cpf + '\n'
 				+ "logradouro: " + logradouro + '\n' + "numero: " + numero + '\n';

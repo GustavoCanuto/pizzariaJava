@@ -2,7 +2,7 @@ package br.com.pizzariagustavo.service;
 
 import javax.swing.JOptionPane;
 
-import br.com.pizzariagustavo.infra.OperacaoCanceladaException;
+import br.com.pizzariagustavo.exceptions.OperacaoCanceladaException;
 import br.com.pizzariagustavo.mock.MockCliente;
 import br.com.pizzariagustavo.models.Cliente;
 

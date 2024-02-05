@@ -6,7 +6,7 @@ public class Acompanhamento extends Produto {
 	        super(nome, valor);
 	    }
 
-	@Override
+
 	public String toString() {
 		return "" + nome + " - Valor: R$ " + valor+"" ;
 	}

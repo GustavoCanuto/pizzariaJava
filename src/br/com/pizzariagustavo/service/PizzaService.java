@@ -1,9 +1,9 @@
 package br.com.pizzariagustavo.service;
 
-import java.util.List;
-
 import javax.swing.JOptionPane;
 
+import br.com.pizzariagustavo.exceptions.OpcaoInvalida;
+import br.com.pizzariagustavo.exceptions.OperacaoCanceladaException;
 import br.com.pizzariagustavo.mock.MockProdutos;
 import br.com.pizzariagustavo.models.Recibo;
 import br.com.pizzariagustavo.models.produto.Pizza;
@@ -23,7 +23,6 @@ public class PizzaService {
 					"Escolha o tipo de pizza:\n\n1. Pizza Completa\n2. Pizza Meio a Meio\n\n");
 
 			if (tipoPizzaInput == null) {
-
 				finalizarCompraPizza = true;
 				continue;
 			}
@@ -31,75 +30,64 @@ public class PizzaService {
 			try {
 				int tipoPizza = Integer.parseInt(tipoPizzaInput);
 
-				if (tipoPizza != 1 && tipoPizza != 2) {
-					JOptionPane.showMessageDialog(null, "Opção inválida");
-					continue;
-				}
+				if (tipoPizza != 1 && tipoPizza != 2)
+					throw new OpcaoInvalida();
 
-				String escolhaSaborInput = JOptionPane.showInputDialog(null,
-						"Escolha o sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
+				escolhaSabor = gerarCardapio("Escolha o sabor de pizza:");
 
-				if (escolhaSaborInput == null) {
-					JOptionPane.showMessageDialog(null, "Cancelando escolha de pizza...");
-					finalizarCompraPizza = true;
-					continue;
-				}
-
-				escolhaSabor = Integer.parseInt(escolhaSaborInput);
-
-				if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
-					pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
-				}
+				pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
 
 				if (tipoPizza == 2) {
 
-					String escolhaSaborInput2 = JOptionPane.showInputDialog(null,
-							"Escolha outro sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
+					escolhaSabor2 = gerarCardapio("Escolha outro sabor de pizza:");
 
-					if (escolhaSaborInput2 == null) {
-						JOptionPane.showMessageDialog(null, "Cancelando escolha de pizza...");
-						finalizarCompraPizza = true;
-						continue;
-					}
-					
-					escolhaSabor2 = Integer.parseInt(escolhaSaborInput2);
+					pizzaEscolhida = pizzaEscolhida
+							.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
+					recibo.setListaPizzasEscolhidas(pizzaEscolhida);
 
-					if (escolhaSabor2 >= 1 && escolhaSabor2 <= MockProdutos.getListaPizzas().size()) {
-						pizzaEscolhida = pizzaEscolhida
-								.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
-						recibo.setListaPizzasEscolhidas(pizzaEscolhida);
-					}
-				}
-
-				if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
-
-					if (escolhaSabor2 == 0) {
-						pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
-						recibo.setListaPizzasEscolhidas(pizzaEscolhida);
-					}
-
-					JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
-					int adicionarOutraPizza = JOptionPane.showConfirmDialog(null, "Deseja adicionar outra pizza?",
-							"Confirmação", JOptionPane.YES_NO_OPTION);
-
-					if (adicionarOutraPizza == JOptionPane.NO_OPTION) {
-						finalizarCompraPizza = true;
-					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+
+					recibo.setListaPizzasEscolhidas(MockProdutos.getListaPizzas().get(escolhaSabor - 1));
 				}
+
+				JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
+
+				int adicionarOutraPizza = JOptionPane.showConfirmDialog(null, "Deseja adicionar outra pizza?",
+						"Confirmação", JOptionPane.YES_NO_OPTION);
+
+				if (adicionarOutraPizza == JOptionPane.NO_OPTION) {
+					finalizarCompraPizza = true;
+				}
+
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Opção inválida. Digite um número.");
+
+			} catch (OperacaoCanceladaException e) {
+				finalizarCompraPizza = true;
+				JOptionPane.showMessageDialog(null, "Cancelando escolha de pizza...");
+
+			} catch (OpcaoInvalida e) {
+				JOptionPane.showMessageDialog(null, "Opção inválida.");
 
 			}
 		}
 	}
 
-	private String imprimirLista(List<Pizza> lista) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < lista.size(); i++) {
-			sb.append((i + 1)).append(". ").append(lista.get(i)).append("\n");
+	private int gerarCardapio(String mensagem) {
+
+		String escolhaSaborInput = JOptionPane.showInputDialog(null,
+				mensagem + "\n\n" + MockProdutos.imprimirLista(MockProdutos.getListaPizzas()) + "\n");
+
+		if (escolhaSaborInput == null) {
+			throw new OperacaoCanceladaException();
 		}
-		return sb.toString();
+
+		int escolhaSabor = Integer.parseInt(escolhaSaborInput);
+
+		if (escolhaSabor < 1 || escolhaSabor > MockProdutos.getListaPizzas().size()) {
+			throw new OpcaoInvalida();
+		}
+
+		return escolhaSabor;
 	}
 }
