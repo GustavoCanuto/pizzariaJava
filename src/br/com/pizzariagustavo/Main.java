@@ -49,57 +49,55 @@ public class Main {
 	}
 
 	private static int exibirMenuPrincipal() {
-	    try {
-	        String input = JOptionPane.showInputDialog("""
-	                **** Bem-Vindo a Pizzaria Gustavo ****
-	                
-	                Escolha uma opção:
-	                
-	                 1. Cadastro de Cliente
-	                 2. Compra de Pizza
-	                 3. Sair
-	                 
-	                """);
+		try {
+			String input = JOptionPane.showInputDialog("""
+					**** Bem-Vindo a Pizzaria Gustavo ****
 
-	        if (input == null) {
-	
-	            JOptionPane.showMessageDialog(null, "Saindo do sistema");
-	            System.exit(0);
-	        }
+					Escolha uma opção:
 
-	        return Integer.parseInt(input);
-	    } catch (NumberFormatException e) {
-	        JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
-	        return exibirMenuPrincipal(); 
-	    }
+					 1. Cadastro de Cliente
+					 2. Compra de Pizza
+					 3. Sair
+
+					""");
+
+			if (input == null) {
+
+				JOptionPane.showMessageDialog(null, "Saindo do sistema");
+				System.exit(0);
+			}
+
+			return Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+			return exibirMenuPrincipal();
+		}
 	}
 
 	private static int exibirMenuCompra() {
-	    try {
-	        String input = JOptionPane.showInputDialog(
-	                """
-	                Escolha uma opção:
-	                
-	                1. Escolher Sabor Pizza
-	                2. Escolher Acompanhamento
-	                3. Verificar Carrinho
-	                4. Finalizar Compra/ Gerar Recibo
-	                5. Cancelar Compra/ Voltar Menu Principal
-	                
-	                """);
+		try {
+			String input = JOptionPane.showInputDialog("""
+					Escolha uma opção:
 
-	        if (input == null) {
-	        	
-	            JOptionPane.showMessageDialog(null, "Saindo do sistema");
-	            System.exit(0);
-	        }
+					1. Escolher Sabor Pizza
+					2. Escolher Acompanhamento
+					3. Verificar Carrinho
+					4. Finalizar Compra/ Gerar Recibo
+					5. Cancelar Compra/ Voltar Menu Principal
 
-	        return Integer.parseInt(input);
-	    } catch (NumberFormatException | NullPointerException e) {
-	        JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
-	        return exibirMenuCompra(); 
-	    }
+					""");
+
+			if (input == null) {
+				return 5;
+			}
+
+			return Integer.parseInt(input);
+		} catch (NumberFormatException | NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+			return exibirMenuCompra();
+		}
 	}
+
 	private static void realizarCompra() {
 		ClienteService clienteService = new ClienteService();
 
@@ -145,7 +143,6 @@ public class Main {
 		}
 	}
 
-	
 	private static void finalizarCompra(Recibo recibo) {
 		JOptionPane.showMessageDialog(null, "Recibo gerado:\n" + recibo);
 	}

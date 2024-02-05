@@ -10,45 +10,54 @@ import br.com.pizzariagustavo.models.produto.Acompanhamento;
 
 public class AcompanhamentoService {
 
-	public void escolherAcompanhamento(Recibo recibo) {
+    public void escolherAcompanhamento(Recibo recibo) {
 
-		boolean finalizarCompraAcompanhamento = false;
+        boolean finalizarCompraAcompanhamento = false;
 
-		while (!finalizarCompraAcompanhamento) {
-			String escolhaAcompanhamentoInput = JOptionPane.showInputDialog(null,
-					"Escolha um acompanhamento:\n\n" + imprimirLista(MockProdutos.getListaAcompanhamentos()) + "\n");
+        while (!finalizarCompraAcompanhamento) {
+            String escolhaAcompanhamentoInput = JOptionPane.showInputDialog(null,
+                    "Escolha um acompanhamento:\n\n" + imprimirLista(MockProdutos.getListaAcompanhamentos()) + "\n");
 
-			int escolhaAcompanhamento = Integer.parseInt(escolhaAcompanhamentoInput);
+            // Verificar se o usuário clicou em "X" ou "Cancelar"
+            if (escolhaAcompanhamentoInput == null) {
+                JOptionPane.showMessageDialog(null, "Escolha de acompanhamento cancelada.");
+                return;
+            }
 
-			if (escolhaAcompanhamento >= 1 && escolhaAcompanhamento <= MockProdutos.getListaAcompanhamentos().size()) {
+            try {
+                int escolhaAcompanhamento = Integer.parseInt(escolhaAcompanhamentoInput);
 
-				Acompanhamento acompanhamentoEscolhido = MockProdutos.getListaAcompanhamentos()
-						.get(escolhaAcompanhamento - 1);
+                if (escolhaAcompanhamento >= 1
+                        && escolhaAcompanhamento <= MockProdutos.getListaAcompanhamentos().size()) {
 
-				recibo.setListaAcompanhamentoEscolhidas(acompanhamentoEscolhido);
+                    Acompanhamento acompanhamentoEscolhido = MockProdutos.getListaAcompanhamentos()
+                            .get(escolhaAcompanhamento - 1);
 
-				JOptionPane.showMessageDialog(null,
-						"Acompanhamento escolhido: " + acompanhamentoEscolhido.getNome() + "\n");
+                    recibo.setListaAcompanhamentoEscolhidas(acompanhamentoEscolhido);
 
-				int adicionarOutroAcompanhamento = JOptionPane.showConfirmDialog(null,
-						"Deseja adicionar outro acompanhamento?\n", "Confirmação", JOptionPane.YES_NO_OPTION);
+                    JOptionPane.showMessageDialog(null,
+                            "Acompanhamento escolhido: " + acompanhamentoEscolhido.getNome() + "\n");
 
-				if (adicionarOutroAcompanhamento == JOptionPane.NO_OPTION) {
-					finalizarCompraAcompanhamento = true;
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
-			}
-		}
+                    int adicionarOutroAcompanhamento = JOptionPane.showConfirmDialog(null,
+                            "Deseja adicionar outro acompanhamento?\n", "Confirmação", JOptionPane.YES_NO_OPTION);
 
-	}
+                    if (adicionarOutroAcompanhamento == JOptionPane.NO_OPTION) {
+                        finalizarCompraAcompanhamento = true;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Opção inválida. Digite um número.");
+            }
+        }
+    }
 
-	private <T> String imprimirLista(List<T> lista) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < lista.size(); i++) {
-			sb.append((i + 1)).append(". ").append(lista.get(i)).append("\n");
-		}
-		return sb.toString();
-	}
-
+    private <T> String imprimirLista(List<T> lista) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lista.size(); i++) {
+            sb.append((i + 1)).append(". ").append(lista.get(i)).append("\n");
+        }
+        return sb.toString();
+    }
 }

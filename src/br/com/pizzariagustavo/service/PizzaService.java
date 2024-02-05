@@ -22,53 +22,75 @@ public class PizzaService {
 			String tipoPizzaInput = JOptionPane.showInputDialog(null,
 					"Escolha o tipo de pizza:\n\n1. Pizza Completa\n2. Pizza Meio a Meio\n\n");
 
-			int tipoPizza = Integer.parseInt(tipoPizzaInput);
+			if (tipoPizzaInput == null) {
 
-			if (tipoPizza != 1 && tipoPizza != 2) {
-				JOptionPane.showMessageDialog(null, "Opção inválida");
-				return;
+				finalizarCompraPizza = true;
+				continue;
 			}
 
-			String escolhaSaborInput = JOptionPane.showInputDialog(null,
-					"Escolha o sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
+			try {
+				int tipoPizza = Integer.parseInt(tipoPizzaInput);
 
-			escolhaSabor = Integer.parseInt(escolhaSaborInput);
-
-			if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
-				pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
-			}
-
-			if (tipoPizza == 2) {
-
-				String escolhaSaborInput2 = JOptionPane.showInputDialog(null,
-						"Escolha outro sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
-
-				escolhaSabor2 = Integer.parseInt(escolhaSaborInput2);
-
-				if (escolhaSabor2 >= 1 && escolhaSabor2 <= MockProdutos.getListaPizzas().size()) {
-					pizzaEscolhida = pizzaEscolhida
-							.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
-					recibo.setListaPizzasEscolhidas(pizzaEscolhida);
+				if (tipoPizza != 1 && tipoPizza != 2) {
+					JOptionPane.showMessageDialog(null, "Opção inválida");
+					continue;
 				}
 
-			}
+				String escolhaSaborInput = JOptionPane.showInputDialog(null,
+						"Escolha o sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
 
-			if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
-
-				if (escolhaSabor2 == 0) {
-					pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
-					recibo.setListaPizzasEscolhidas(pizzaEscolhida);
-				}
-
-				JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
-				int adicionarOutraPizza = JOptionPane.showConfirmDialog(null, "Deseja adicionar outra pizza?",
-						"Confirmação", JOptionPane.YES_NO_OPTION);
-
-				if (adicionarOutraPizza == JOptionPane.NO_OPTION) {
+				if (escolhaSaborInput == null) {
+					JOptionPane.showMessageDialog(null, "Cancelando escolha de pizza...");
 					finalizarCompraPizza = true;
+					continue;
 				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+
+				escolhaSabor = Integer.parseInt(escolhaSaborInput);
+
+				if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
+					pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
+				}
+
+				if (tipoPizza == 2) {
+
+					String escolhaSaborInput2 = JOptionPane.showInputDialog(null,
+							"Escolha outro sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
+
+					if (escolhaSaborInput2 == null) {
+						JOptionPane.showMessageDialog(null, "Cancelando escolha de pizza...");
+						finalizarCompraPizza = true;
+						continue;
+					}
+					
+					escolhaSabor2 = Integer.parseInt(escolhaSaborInput2);
+
+					if (escolhaSabor2 >= 1 && escolhaSabor2 <= MockProdutos.getListaPizzas().size()) {
+						pizzaEscolhida = pizzaEscolhida
+								.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
+						recibo.setListaPizzasEscolhidas(pizzaEscolhida);
+					}
+				}
+
+				if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
+
+					if (escolhaSabor2 == 0) {
+						pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
+						recibo.setListaPizzasEscolhidas(pizzaEscolhida);
+					}
+
+					JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
+					int adicionarOutraPizza = JOptionPane.showConfirmDialog(null, "Deseja adicionar outra pizza?",
+							"Confirmação", JOptionPane.YES_NO_OPTION);
+
+					if (adicionarOutraPizza == JOptionPane.NO_OPTION) {
+						finalizarCompraPizza = true;
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Opção inválida. Digite um número.");
+
 			}
 		}
 	}
@@ -80,5 +102,4 @@ public class PizzaService {
 		}
 		return sb.toString();
 	}
-
 }
