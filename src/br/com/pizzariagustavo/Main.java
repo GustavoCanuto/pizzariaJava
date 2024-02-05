@@ -49,19 +49,55 @@ public class Main {
 	}
 
 	private static int exibirMenuPrincipal() {
-		return Integer
-				.parseInt(JOptionPane.showInputDialog("""
-						**** Bem-Vindo a Pizzaria Gustavo ****
-						
-						Escolha uma opção:
-						
-						 1. Cadastro de Cliente
-						 2. Compra de Pizza
-						 3. Sair
-						
-						"""));
+	    try {
+	        String input = JOptionPane.showInputDialog("""
+	                **** Bem-Vindo a Pizzaria Gustavo ****
+	                
+	                Escolha uma opção:
+	                
+	                 1. Cadastro de Cliente
+	                 2. Compra de Pizza
+	                 3. Sair
+	                 
+	                """);
+
+	        if (input == null) {
+	            // Se o usuário clicou em "Cancelar" ou "X", encerra o programa
+	            JOptionPane.showMessageDialog(null, "Saindo do sistema");
+	            System.exit(0);
+	        }
+
+	        return Integer.parseInt(input);
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+	        return exibirMenuPrincipal(); // Chama recursivamente o método para tentar novamente
+	    }
 	}
 
+	private static int exibirMenuCompra() {
+	    try {
+	        String input = JOptionPane.showInputDialog(
+	                """
+	                Escolha uma opção:
+	                
+	                1. Escolher Sabor Pizza
+	                2. Escolher Acompanhamento
+	                3. Verificar Carrinho
+	                4. Finalizar Compra/ Gerar Recibo
+	                5. Cancelar Compra/ Voltar Menu Principal
+	                
+	                """);
+
+	        if (input == null) {
+	            throw new NullPointerException(); // Lança uma exceção para tratar null
+	        }
+
+	        return Integer.parseInt(input);
+	    } catch (NumberFormatException | NullPointerException e) {
+	        JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+	        return exibirMenuCompra(); // Chama recursivamente o método para tentar novamente
+	    }
+	}
 	private static void realizarCompra() {
 		ClienteService clienteService = new ClienteService();
 
@@ -107,20 +143,7 @@ public class Main {
 		}
 	}
 
-	private static int exibirMenuCompra() {
-		return Integer.parseInt(JOptionPane.showInputDialog(
-				"""
-				Escolha uma opção:
-				
-				1. Escolher Sabor Pizza
-				2. Escolher Acompanhamento
-				3. Verificar Carrinho
-				4. Finalizar Compra/ Gerar Recibo
-				5. Cancelar Compra/ Voltar Menu Principal
-			
-				"""));
-	}
-
+	
 	private static void finalizarCompra(Recibo recibo) {
 		JOptionPane.showMessageDialog(null, "Recibo gerado:\n" + recibo);
 	}
