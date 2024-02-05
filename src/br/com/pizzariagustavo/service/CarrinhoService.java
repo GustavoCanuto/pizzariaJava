@@ -32,7 +32,6 @@ public class CarrinhoService {
 
 		String escolhaRemoverInput = JOptionPane.showInputDialog(null, carrinhoInfo.toString());
 
-		// Verificar se o usuário clicou em "X" ou "Cancelar"
 		if (escolhaRemoverInput == null) {
 			JOptionPane.showMessageDialog(null, "Operação no carrinho cancelada.");
 			return;

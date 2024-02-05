@@ -18,7 +18,6 @@ public class AcompanhamentoService {
             String escolhaAcompanhamentoInput = JOptionPane.showInputDialog(null,
                     "Escolha um acompanhamento:\n\n" + imprimirLista(MockProdutos.getListaAcompanhamentos()) + "\n");
 
-            // Verificar se o usuário clicou em "X" ou "Cancelar"
             if (escolhaAcompanhamentoInput == null) {
                 JOptionPane.showMessageDialog(null, "Escolha de acompanhamento cancelada.");
                 return;
