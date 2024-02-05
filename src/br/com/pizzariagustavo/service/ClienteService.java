@@ -1,45 +1,35 @@
 package br.com.pizzariagustavo.service;
 
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 import br.com.pizzariagustavo.mock.MockCliente;
 import br.com.pizzariagustavo.models.Cliente;
 
 public class ClienteService {
-	
-	private Scanner scanner = new Scanner(System.in);
-	
+
 	public void cadastrarCliente() {
-		System.out.println("***Tela de Cadastro do Cliente***\n");
-		System.out.println("Digite o nome do cliente:");
-		String nomeCliente = scanner.next();
-		System.out.println("Digite o CPF do cliente:");
-		String cpfCliente = scanner.next();
-		System.out.println("Digite o logradouro do cliente:");
-		String logradouroCliente = scanner.next();
-		System.out.println("Digite o número do cliente:");
-		String numeroCliente = scanner.next();
+		String nomeCliente = JOptionPane.showInputDialog("Digite o nome do cliente:\n");
+		String cpfCliente = JOptionPane.showInputDialog("Digite o CPF do cliente:\n");
+		String logradouroCliente = JOptionPane.showInputDialog("Digite o logradouro do cliente:\n");
+		String numeroCliente = JOptionPane.showInputDialog("Digite o número do cliente:\n");
 
 		Cliente novoCliente = new Cliente(nomeCliente, cpfCliente, logradouroCliente, numeroCliente);
 		MockCliente.setListaClientes(novoCliente);
 
-
-		System.out.println("Cliente cadastrado com sucesso:\n" + novoCliente);
+		JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso\n" + novoCliente + "\n");
 	}
-	
+
 	public Cliente validarCPF() {
-		
-		System.out.println("Digite o CPF do cliente:");
-		String cpfClienteCompra = scanner.next();
+		String cpfClienteCompra = JOptionPane.showInputDialog("Digite o CPF do cliente:\n");
 
 		Cliente clienteEncontrado = encontrarClientePorCPF(cpfClienteCompra);
 
 		if (clienteEncontrado != null) {
 			return clienteEncontrado;
 		} else {
-			System.out.println("Cliente não encontrado. Voltando ao Menu Principal.\n");
+			JOptionPane.showMessageDialog(null, "Cliente não encontrado. Voltando ao Menu Principal.\n");
 		}
-		
+
 		return null;
 	}
 

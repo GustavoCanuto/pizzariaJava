@@ -1,18 +1,17 @@
 package br.com.pizzariagustavo.service;
 
 import java.util.List;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import br.com.pizzariagustavo.mock.MockProdutos;
 import br.com.pizzariagustavo.models.Recibo;
 import br.com.pizzariagustavo.models.produto.Pizza;
 
 public class PizzaService {
-	
-	private Scanner scanner = new Scanner(System.in);
 
 	public void escolherPizza(Recibo recibo) {
-		
+
 		Pizza pizzaEscolhida = null;
 		boolean finalizarCompraPizza = false;
 
@@ -20,20 +19,20 @@ public class PizzaService {
 			int escolhaSabor = 0;
 			int escolhaSabor2 = 0;
 
-			System.out.println("\n1- Pizza Completa\n2- Pizza Meio a Meio ");
+			String tipoPizzaInput = JOptionPane.showInputDialog(null,
+					"Escolha o tipo de pizza:\n\n1. Pizza Completa\n2. Pizza Meio a Meio\n\n");
 
-			int tipoPizza = scanner.nextInt();
-			
+			int tipoPizza = Integer.parseInt(tipoPizzaInput);
+
 			if (tipoPizza != 1 && tipoPizza != 2) {
-				System.out.println("\nOpcao Invalida");
+				JOptionPane.showMessageDialog(null, "Opção inválida");
 				return;
 			}
 
-			System.out.println("\nEscolha um sabor de pizza:");
+			String escolhaSaborInput = JOptionPane.showInputDialog(null,
+					"Escolha o sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
 
-			imprimirLista(MockProdutos.getListaPizzas());
-
-			escolhaSabor = scanner.nextInt();
+			escolhaSabor = Integer.parseInt(escolhaSaborInput);
 
 			if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
 				pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
@@ -41,18 +40,18 @@ public class PizzaService {
 
 			if (tipoPizza == 2) {
 
-				System.out.println("Escolha o segundo sabor");
+				String escolhaSaborInput2 = JOptionPane.showInputDialog(null,
+						"Escolha outro sabor de pizza:\n\n" + imprimirLista(MockProdutos.getListaPizzas()) + "\n");
 
-				imprimirLista(MockProdutos.getListaPizzas());
-
-				escolhaSabor2 = scanner.nextInt();
+				escolhaSabor2 = Integer.parseInt(escolhaSaborInput2);
 
 				if (escolhaSabor2 >= 1 && escolhaSabor2 <= MockProdutos.getListaPizzas().size()) {
-					pizzaEscolhida = pizzaEscolhida.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
+					pizzaEscolhida = pizzaEscolhida
+							.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
 					recibo.setListaPizzasEscolhidas(pizzaEscolhida);
 				}
 
-			}  
+			}
 
 			if (escolhaSabor >= 1 && escolhaSabor <= MockProdutos.getListaPizzas().size()) {
 
@@ -61,28 +60,25 @@ public class PizzaService {
 					recibo.setListaPizzasEscolhidas(pizzaEscolhida);
 				}
 
-				System.out.println("Pizza escolhida: " + pizzaEscolhida.getNome());
-				System.out.println("\nDeseja adicionar outra Pizza?\n1- Sim \n2- Não ");
-				int adicionarOutraPizza = scanner.nextInt();
+				JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
+				int adicionarOutraPizza = JOptionPane.showConfirmDialog(null, "Deseja adicionar outra pizza?",
+						"Confirmação", JOptionPane.YES_NO_OPTION);
 
-				if (adicionarOutraPizza == 2) {
+				if (adicionarOutraPizza == JOptionPane.NO_OPTION) {
 					finalizarCompraPizza = true;
 				}
-
 			} else {
-
-				System.out.println("\nOpção inválida. Tente novamente.");
-
+				JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
 			}
 		}
 	}
 
-
-	private  <T> void imprimirLista(List<T> lista) {
+	private String imprimirLista(List<Pizza> lista) {
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < lista.size(); i++) {
-			System.out.println((i + 1) + ". " + lista.get(i));
+			sb.append((i + 1)).append(". ").append(lista.get(i)).append("\n");
 		}
+		return sb.toString();
 	}
-
 
 }

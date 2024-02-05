@@ -1,7 +1,8 @@
 package br.com.pizzariagustavo.service;
 
 import java.util.List;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import br.com.pizzariagustavo.mock.MockProdutos;
 import br.com.pizzariagustavo.models.Recibo;
@@ -9,48 +10,45 @@ import br.com.pizzariagustavo.models.produto.Acompanhamento;
 
 public class AcompanhamentoService {
 
-	private Scanner scanner = new Scanner(System.in);
-	
 	public void escolherAcompanhamento(Recibo recibo) {
-		
+
 		boolean finalizarCompraAcompanhamento = false;
 
 		while (!finalizarCompraAcompanhamento) {
-			System.out.println("\nEscolha um acompanhamento:\n");
+			String escolhaAcompanhamentoInput = JOptionPane.showInputDialog(null,
+					"Escolha um acompanhamento:\n\n" + imprimirLista(MockProdutos.getListaAcompanhamentos()) + "\n");
 
-			imprimirLista(MockProdutos.getListaAcompanhamentos());
-
-			int escolhaAcompanhamento = scanner.nextInt();
+			int escolhaAcompanhamento = Integer.parseInt(escolhaAcompanhamentoInput);
 
 			if (escolhaAcompanhamento >= 1 && escolhaAcompanhamento <= MockProdutos.getListaAcompanhamentos().size()) {
 
-				Acompanhamento acompanhamentoEscolhido = MockProdutos.getListaAcompanhamentos().get(escolhaAcompanhamento - 1);
+				Acompanhamento acompanhamentoEscolhido = MockProdutos.getListaAcompanhamentos()
+						.get(escolhaAcompanhamento - 1);
 
 				recibo.setListaAcompanhamentoEscolhidas(acompanhamentoEscolhido);
 
-				System.out.println("Acompanhamento escolhido: " + acompanhamentoEscolhido.getNome());
+				JOptionPane.showMessageDialog(null,
+						"Acompanhamento escolhido: " + acompanhamentoEscolhido.getNome() + "\n");
 
-				System.out.println("\nDeseja adicionar outro Acompanhamento?\n1- Sim \n2- Não ");
+				int adicionarOutroAcompanhamento = JOptionPane.showConfirmDialog(null,
+						"Deseja adicionar outro acompanhamento?\n", "Confirmação", JOptionPane.YES_NO_OPTION);
 
-				int adicionarOutroAcompanhamento = scanner.nextInt();
-
-				if (adicionarOutroAcompanhamento == 2) {
-
+				if (adicionarOutroAcompanhamento == JOptionPane.NO_OPTION) {
 					finalizarCompraAcompanhamento = true;
-
 				}
 			} else {
-				System.out.println("\nOpção inválida. Tente novamente.");
+				JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
 			}
 		}
 
 	}
-	
-	private  <T> void imprimirLista(List<T> lista) {
+
+	private <T> String imprimirLista(List<T> lista) {
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < lista.size(); i++) {
-			System.out.println((i + 1) + ". " + lista.get(i));
+			sb.append((i + 1)).append(". ").append(lista.get(i)).append("\n");
 		}
+		return sb.toString();
 	}
 
-	
 }

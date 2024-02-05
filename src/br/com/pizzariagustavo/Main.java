@@ -2,6 +2,8 @@ package br.com.pizzariagustavo;
 
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import br.com.pizzariagustavo.mock.MockProdutos;
 import br.com.pizzariagustavo.models.Cliente;
 import br.com.pizzariagustavo.models.Recibo;
@@ -13,20 +15,19 @@ import br.com.pizzariagustavo.service.PizzaService;
 public class Main {
 
 	private static Scanner scanner = new Scanner(System.in);
-	
+
 	public static void main(String[] args) {
-		
+
 		MockProdutos mock = new MockProdutos();
 		ClienteService clienteService = new ClienteService();
-		
+
 		mock.inicializarPizzas();
 		mock.inicializarAcompanhamentos();
-		
+
 		boolean sair = false;
 
 		while (!sair) {
-			exibirMenuPrincipal();
-			int escolha = scanner.nextInt();
+			int escolha = exibirMenuPrincipal();
 
 			switch (escolha) {
 			case 1:
@@ -36,44 +37,51 @@ public class Main {
 				realizarCompra();
 				break;
 			case 3:
-				System.out.println("\nSaindo do sistema");
+				JOptionPane.showMessageDialog(null, "Saindo do sistema");
 				sair = true;
 				break;
 			default:
-				System.out.println("\nOpção inválida. Tente novamente.");
+				JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
 			}
 		}
 
 		scanner.close();
 	}
 
-	private static void exibirMenuPrincipal() {
-		System.out.println("**** Bem-Vindo a Pizzaria Gustavo ***\n\nEscolha uma opção:\n");
-		System.out.println("1. Cadastro de cliente");
-		System.out.println("2. Compra de Pizza");
-		System.out.println("3. Sair\n");
+	private static int exibirMenuPrincipal() {
+		return Integer
+				.parseInt(JOptionPane.showInputDialog("""
+						**** Bem-Vindo a Pizzaria Gustavo ****
+						
+						Escolha uma opção:
+						
+						 1. Cadastro de Cliente
+						 2. Compra de Pizza
+						 3. Sair
+						
+						"""));
 	}
 
 	private static void realizarCompra() {
-		System.out.println("***Tela de Compra de Pizza***\n");
 		ClienteService clienteService = new ClienteService();
-		
+
 		Cliente cliente = clienteService.validarCPF();
-		
-		if(cliente==null) return;
-		
+
+		if (cliente == null)
+			return;
+
 		PizzaService pizzaService = new PizzaService();
 		AcompanhamentoService acompanhamentoService = new AcompanhamentoService();
 		CarrinhoService carrinhoService = new CarrinhoService();
-		
+
 		Recibo recibo = new Recibo();
 		recibo.setCliente(cliente);
 
 		boolean compraFinalizada = false;
 
 		while (!compraFinalizada) {
-			exibirMenuCompra();
-			int escolhaCompra = scanner.nextInt();
+
+			int escolhaCompra = exibirMenuCompra();
 
 			switch (escolhaCompra) {
 			case 1:
@@ -90,26 +98,31 @@ public class Main {
 				compraFinalizada = true;
 				break;
 			case 5:
-				System.out.println("\nVoltando ao Menu Principal.");
+				JOptionPane.showMessageDialog(null, "Voltando ao Menu Principal.");
 				compraFinalizada = true;
 				break;
 			default:
-				System.out.println("\nOpção inválida. Tente novamente.");
+				JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
 			}
 		}
 	}
-	
-	private static void exibirMenuCompra() {
-		System.out.println("\nEscolha uma opção:\n");
-		System.out.println("1. Escolher Sabor Pizza");
-		System.out.println("2. Escolher Acompanhamento");
-		System.out.println("3. Verificar Carrinho");
-		System.out.println("4. Finalizar Compra/ Gerar Recibo");
-		System.out.println("5. Cancelar Compra/ Voltar Menu Principal");
+
+	private static int exibirMenuCompra() {
+		return Integer.parseInt(JOptionPane.showInputDialog(
+				"""
+				Escolha uma opção:
+				
+				1. Escolher Sabor Pizza
+				2. Escolher Acompanhamento
+				3. Verificar Carrinho
+				4. Finalizar Compra/ Gerar Recibo
+				5. Cancelar Compra/ Voltar Menu Principal
+			
+				"""));
 	}
-	
+
 	private static void finalizarCompra(Recibo recibo) {
-		System.out.println("Recibo gerado:\n" + recibo);
+		JOptionPane.showMessageDialog(null, "Recibo gerado:\n" + recibo);
 	}
-	
+
 }
