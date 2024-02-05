@@ -62,7 +62,7 @@ public class Main {
 	                """);
 
 	        if (input == null) {
-	            // Se o usuário clicou em "Cancelar" ou "X", encerra o programa
+	
 	            JOptionPane.showMessageDialog(null, "Saindo do sistema");
 	            System.exit(0);
 	        }
@@ -70,7 +70,7 @@ public class Main {
 	        return Integer.parseInt(input);
 	    } catch (NumberFormatException e) {
 	        JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
-	        return exibirMenuPrincipal(); // Chama recursivamente o método para tentar novamente
+	        return exibirMenuPrincipal(); 
 	    }
 	}
 
@@ -89,13 +89,15 @@ public class Main {
 	                """);
 
 	        if (input == null) {
-	            throw new NullPointerException(); // Lança uma exceção para tratar null
+	        	
+	            JOptionPane.showMessageDialog(null, "Saindo do sistema");
+	            System.exit(0);
 	        }
 
 	        return Integer.parseInt(input);
 	    } catch (NumberFormatException | NullPointerException e) {
 	        JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
-	        return exibirMenuCompra(); // Chama recursivamente o método para tentar novamente
+	        return exibirMenuCompra(); 
 	    }
 	}
 	private static void realizarCompra() {
