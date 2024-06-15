@@ -8,86 +8,49 @@ import br.com.pizzariagustavo.mock.MockProdutos;
 import br.com.pizzariagustavo.models.Recibo;
 import br.com.pizzariagustavo.models.produto.Pizza;
 
-public class PizzaService {
+public class PizzaService extends AbstractCompraService {
 
-	public void escolherPizza(Recibo recibo) {
+    private Pizza pizzaEscolhida = null;
 
-		Pizza pizzaEscolhida = null;
-		boolean finalizarCompraPizza = false;
+    @Override
+    protected String getMensagemEscolha() {
+        return "Escolha o tipo de pizza:\n\n1. Pizza Completa\n2. Pizza Meio a Meio\n\n";
+    }
 
-		while (!finalizarCompraPizza) {
-			int escolhaSabor = 0;
-			int escolhaSabor2 = 0;
+    @Override
+    protected int getNumeroOpcoes() {
+        return 2;
+    }
 
-			String tipoPizzaInput = JOptionPane.showInputDialog(null,
-					"Escolha o tipo de pizza:\n\n1. Pizza Completa\n2. Pizza Meio a Meio\n\n");
+    @Override
+    protected void processarEscolha(Recibo recibo, int tipoPizza) {
+        int escolhaSabor = gerarCardapio("Escolha o sabor de pizza:");
 
-			if (tipoPizzaInput == null) {
-				finalizarCompraPizza = true;
-				continue;
-			}
+        pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
 
-			try {
-				int tipoPizza = Integer.parseInt(tipoPizzaInput);
+        if (tipoPizza == 2) {
+            int escolhaSabor2 = gerarCardapio("Escolha outro sabor de pizza:");
+            pizzaEscolhida = pizzaEscolhida.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
+        }
 
-				if (tipoPizza != 1 && tipoPizza != 2)
-					throw new OpcaoInvalida();
+        recibo.setListaPizzasEscolhidas(pizzaEscolhida);
+        JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
+    }
 
-				escolhaSabor = gerarCardapio("Escolha o sabor de pizza:");
+    private int gerarCardapio(String mensagem) {
+        String escolhaSaborInput = JOptionPane.showInputDialog(null,
+                mensagem + "\n\n" + MockProdutos.imprimirLista(MockProdutos.getListaPizzas()) + "\n");
 
-				pizzaEscolhida = MockProdutos.getListaPizzas().get(escolhaSabor - 1);
+        if (escolhaSaborInput == null) {
+            throw new OperacaoCanceladaException();
+        }
 
-				if (tipoPizza == 2) {
+        int escolhaSabor = Integer.parseInt(escolhaSaborInput);
 
-					escolhaSabor2 = gerarCardapio("Escolha outro sabor de pizza:");
+        if (escolhaSabor < 1 || escolhaSabor > MockProdutos.getListaPizzas().size()) {
+            throw new OpcaoInvalida();
+        }
 
-					pizzaEscolhida = pizzaEscolhida
-							.gerarPizzaMista(MockProdutos.getListaPizzas().get(escolhaSabor2 - 1));
-					recibo.setListaPizzasEscolhidas(pizzaEscolhida);
-
-				} else {
-
-					recibo.setListaPizzasEscolhidas(MockProdutos.getListaPizzas().get(escolhaSabor - 1));
-				}
-
-				JOptionPane.showMessageDialog(null, "Pizza escolhida: " + pizzaEscolhida.getNome());
-
-				int adicionarOutraPizza = JOptionPane.showConfirmDialog(null, "Deseja adicionar outra pizza?",
-						"Confirmação", JOptionPane.YES_NO_OPTION);
-
-				if (adicionarOutraPizza == JOptionPane.NO_OPTION) {
-					finalizarCompraPizza = true;
-				}
-
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Opção inválida. Digite um número.");
-
-			} catch (OperacaoCanceladaException e) {
-				finalizarCompraPizza = true;
-				JOptionPane.showMessageDialog(null, "Cancelando escolha de pizza...");
-
-			} catch (OpcaoInvalida e) {
-				JOptionPane.showMessageDialog(null, "Opção inválida.");
-
-			}
-		}
-	}
-
-	private int gerarCardapio(String mensagem) {
-
-		String escolhaSaborInput = JOptionPane.showInputDialog(null,
-				mensagem + "\n\n" + MockProdutos.imprimirLista(MockProdutos.getListaPizzas()) + "\n");
-
-		if (escolhaSaborInput == null) {
-			throw new OperacaoCanceladaException();
-		}
-
-		int escolhaSabor = Integer.parseInt(escolhaSaborInput);
-
-		if (escolhaSabor < 1 || escolhaSabor > MockProdutos.getListaPizzas().size()) {
-			throw new OpcaoInvalida();
-		}
-
-		return escolhaSabor;
-	}
+        return escolhaSabor;
+    }
 }
