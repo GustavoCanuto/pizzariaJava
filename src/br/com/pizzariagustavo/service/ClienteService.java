@@ -8,6 +8,15 @@ import br.com.pizzariagustavo.models.Cliente;
 
 public class ClienteService {
 
+	private static ClienteService instance;
+	
+	public static synchronized ClienteService getInstance() {
+        if (instance == null) {
+            instance = new ClienteService();
+        }
+        return instance;
+    }
+	
 	public void cadastrarCliente() {
 		try {
 			String nomeCliente = obterInputNaoNulo("Digite o nome do cliente:");

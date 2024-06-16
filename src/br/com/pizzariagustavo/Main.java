@@ -1,6 +1,5 @@
 package br.com.pizzariagustavo;
 
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -14,21 +13,10 @@ import br.com.pizzariagustavo.service.PizzaService;
 
 public class Main {
 
-    // Singleton para Scanner
-    private static class ScannerSingleton {
-        private static final Scanner INSTANCE = new Scanner(System.in);
-
-        private ScannerSingleton() {}
-
-        public static Scanner getInstance() {
-            return INSTANCE;
-        }
-    }
-
     public static void main(String[] args) {
 
         MockProdutos mock = new MockProdutos();
-        ClienteService clienteService = new ClienteService();
+        ClienteService clienteService = ClienteService.getInstance();
 
         mock.inicializarPizzas();
         mock.inicializarAcompanhamentos();
@@ -54,11 +42,10 @@ public class Main {
             }
         }
 
-        ScannerSingleton.getInstance().close();
     }
 
     private static void realizarCompra() {
-        ClienteService clienteService = new ClienteService();
+    	ClienteService clienteService = ClienteService.getInstance();
 
         Cliente cliente = clienteService.validarCPF();
 
